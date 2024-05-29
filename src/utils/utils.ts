@@ -538,6 +538,12 @@ function remoteErrorCause(e: any): [any, number] {
   return [errorCause, depth];
 }
 
+function getVersion(configVersion: string, packageVersion: string): string {
+  const formattedConfigVersion = configVersion.replace(/-/g, '|');
+  const formattedString = `${packageVersion}|${formattedConfigVersion}`;
+  return formattedString;
+}
+
 const validEnvRegex = /[a-zA-Z_]+[a-zA-Z0-9_]*/;
 
 export {
@@ -552,6 +558,7 @@ export {
   outputFormatterError,
   retryAuthentication,
   remoteErrorCause,
+  getVersion,
   encodeEscapedWrapped,
   encodeEscaped,
   encodeEscapedRegex,

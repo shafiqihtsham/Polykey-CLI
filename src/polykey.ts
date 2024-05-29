@@ -141,6 +141,8 @@ async function polykeyMain(argv: Array<string>): Promise<number> {
   const { default: commander } = await import('commander');
   const { default: ErrorPolykey } = await import('polykey/dist/ErrorPolykey');
   const { default: config } = await import('polykey/dist/config');
+  // @ts-ignore package.json is outside rootDir
+  const { version } = await import('../package.json');
   const { default: CommandBootstrap } = await import('./bootstrap');
   const { default: CommandAgent } = await import('./agent');
   const { default: CommandVaults } = await import('./vaults');
@@ -160,7 +162,11 @@ async function polykeyMain(argv: Array<string>): Promise<number> {
   const exitHandlers = new binUtils.ExitHandlers();
   const rootCommand = new CommandPolykey({ exitHandlers, fs });
   rootCommand.name('polykey');
-  rootCommand.version(config.sourceVersion);
+  rootCommand.version(
+    binUtils.getVersion(config.version, version),
+    undefined,
+    'Output version number: <APPVERSION>|<LIBRARYVERSION>|<STATEVERSION>|<NETWORKVERSION>',
+  );
   rootCommand.description('Polykey CLI');
   rootCommand.addCommand(new CommandBootstrap({ exitHandlers, fs }));
   rootCommand.addCommand(new CommandAgent({ exitHandlers, fs }));

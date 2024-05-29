@@ -341,4 +341,20 @@ describe('bin/utils', () => {
       { numRuns: 100 }, // Number of times to run the test
     );
   });
+  test('getVersion returns the correct formatted version string', () => {
+    fc.assert(
+      fc.property(fc.string(), fc.string(), (configVersion, packageVersion) => {
+        // Call the function with generated inputs
+        const result = binUtils.getVersion(configVersion, packageVersion);
+
+        // Assert the expected format
+        const expected = `${packageVersion}|${configVersion.replace(
+          /-/g,
+          '|',
+        )}`;
+        return result === expected;
+      }),
+      { verbose: true },
+    );
+  });
 });
